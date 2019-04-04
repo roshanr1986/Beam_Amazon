@@ -6,6 +6,7 @@ import cucumber.api.java.en.Given;
 
 import cucumber.api.Scenario;
 //import org.junit.Assert;
+import gherkin.lexer.Th;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.PageFactory;
@@ -29,7 +30,7 @@ import java.util.*;
 public class shoppingCart_Steps {
     public WebDriver driver;
     public Scenario _scenario;
-    private setup testSetup;
+    private setup driverSetup;
     private HomePage homePage;
     private ProductPage productPage;
     private CartPage cartPage;
@@ -41,7 +42,7 @@ public class shoppingCart_Steps {
     public shoppingCart_Steps() {
         this.driver = Hooks.driver;
         this._scenario = Hooks._scenario;
-        testSetup = new setup(driver);
+        driverSetup = new setup(driver);
         homePage=new HomePage(driver,_scenario);
         productPage=new ProductPage(driver,_scenario);
         propertyReader = new PropertyReader();
@@ -55,7 +56,7 @@ public class shoppingCart_Steps {
     public void iLoginTo(String url)  {
         System.out.println("URL is "+url.trim());
         try {
-            testSetup.setURL(url);
+            driverSetup.setURL(url);
             _scenario.write("navigated to URL : "+url);
         } catch (Exception e) {
             System.out.println("Unable to Navigate to "+url+" due to following exception - "+e.getMessage());
@@ -254,7 +255,7 @@ public class shoppingCart_Steps {
     }
 
     @Then("^I add following products to the cart$")
-    public void iAddFollowingProductsToTheCartWithQuantity(DataTable productsToBeAdded) throws Throwable {
+    public void iAddFollowingProductsToTheCart(DataTable productsToBeAdded) throws Throwable {
         //get the total number of products to be added
         int productCountToBeAdded = productsToBeAdded.asMaps(String.class,String.class).size();
         System.out.println("Total number of products to be added to cart : "+productCountToBeAdded);
@@ -264,7 +265,7 @@ public class shoppingCart_Steps {
             //clicking on the product
             try {
                 productPage.selectProductByDescription(productList.get("productDescription"));
-                System.out.println("Product selected");
+                System.out.println("========== PRODUCT SELECTED : "+productList.get("productDescription"));
             } catch (NoSuchElementException ne){
                 System.out.println("TEST FAILED INTENTIONALLY !. Unable to find a matching product with given Name - "+productList.get("productDescription"));
                 Assert.fail("TEST FAILED INTENTIONALLY !. Unable to find a matching product with given Name - "+productList.get("productDescription"));
@@ -285,6 +286,7 @@ public class shoppingCart_Steps {
             //click on add to cart button
             try {
                 productPage.clickOnAddToCart();
+                System.out.println("========== CLICKED ADD TO CART FOR : "+productList.get("productDescription"));
             } catch (Exception e) {
                 System.out.println("Unable to click on 'Add to cart' button due to an exception - "+e.getMessage());
                 Assert.fail("Unable to click on 'Add to cart' button due to an exception - "+e.getMessage());
@@ -292,7 +294,7 @@ public class shoppingCart_Steps {
 
             try {
                 productPage.closeAddToCartOverlay();
-                //productPage.clickOnViewCart();
+                System.out.println("========== OVERLAY CLOSED FOR : "+productList.get("productDescription"));
             }  catch (NoSuchElementException ne){
                     System.out.println("Close icon in the overlay was not found. Unable to close the overlay and proceed ahead. Original Exception - "+ne.getMessage());
                     Assert.fail("Close icon in the overlay was not found. Unable to close the overlay and proceed ahead. Original Exception - "+ne.getMessage());
@@ -311,7 +313,7 @@ public class shoppingCart_Steps {
         double subTotal=0;
         try {
             totalPrice=cartPage.getTotalPriceOfAllItemsInTheCart();
-            System.out.println("Total price of all items : "+totalPrice);
+            System.out.println("============  TOTAL PRICE OF ALL ITEMS : "+totalPrice);
         } catch (Exception e) {
             System.out.println("TEST FAILED !. Unable to read the total price of each element from the cart due to an exception - "+e.getMessage());
             _scenario.write("TEST FAILED !. Unable to read the total price of each element from the cart due to an exception - "+e.getMessage());
@@ -321,7 +323,7 @@ public class shoppingCart_Steps {
         // Read the subtotal value
         try {
             subTotal = cartPage.getSubTotalInTheCart();
-            System.out.println("Subtotal value in the cart is : "+subTotal);
+            System.out.println("===========  SUBTOTAL VALUE IN THE CART : "+subTotal);
         } catch (Exception e) {
             System.out.println("TEST FAILED !. Unable to read the subtotal price from the cart due to an exception - "+e.getMessage());
             _scenario.write("TEST FAILED !. Unable to read the subtotal price from the cart due to an exception - "+e.getMessage());
@@ -337,5 +339,145 @@ public class shoppingCart_Steps {
             Assert.fail("TEST FAILED !. total price of products and subtotal in the cart mismatched - "+e.getMessage());
         }
 
+    }
+
+    @Then("^I select the product \"([^\"]*)\" from search results$")
+    public void iSelectTheProductFromSearchResults(String productName) throws Throwable {
+        //clicking on the product
+        try {
+            productPage.selectProductByDescription(productName);
+            System.out.println("Product selected");
+        } catch (NoSuchElementException ne){
+            System.out.println("TEST FAILED INTENTIONALLY !. Unable to find a matching product with given Name - "+productName);
+            Assert.fail("TEST FAILED INTENTIONALLY !. Unable to find a matching product with given Name - "+productName);
+
+        } catch (Exception e) {
+            System.out.println("Unable to select the product with given name - "+productName+" due to an exception - "+e.getMessage());
+            Assert.fail("Unable to select the product with given name - "+productName+" due to an exception - "+e.getMessage());
+        }
+    }
+
+    @Then("^I verify if page title contains the text \"([^\"]*)\"$")
+    public void iVerifyIfPageTitleContainsTheText(String expectedTitle) throws Throwable {
+        String actualTitle = null;
+        try {
+            actualTitle=productPage.getProductPageTitle();
+            System.out.println("Actual page title : "+actualTitle);
+        } catch (Exception e) {
+            System.out.println("Unable to get the title of the page due to an exception - "+e.getMessage());
+            _scenario.write("Unable to get the title of the page due to an exception - "+e.getMessage());
+            Assert.fail("TEST FAILED !. Unable to get the title of the page due to an exception - "+e.getMessage());
+        }
+
+        try {
+            Assert.assertTrue(actualTitle.toLowerCase().contains(expectedTitle.toLowerCase()));
+            System.out.println("actual title contains the expeceted product name");
+        } catch (AssertionError e) {
+            System.out.println("TEST FAILED !. Actual page title does not contain the expected product name. Actual title - "+actualTitle+" Expected title - "+expectedTitle);
+            _scenario.write("TEST FAILED !. Actual page title does not contain the expected product name. Actual title - "+actualTitle+" Expected title - "+expectedTitle);
+            Assert.fail("TEST FAILED !. Actual page title does not contain the expected product name. Actual title - "+actualTitle+" Expected title - "+expectedTitle);
+        }
+    }
+
+    @Given("^I select search category as \"([^\"]*)\" and click on search$")
+    public void iSelectSearchCategoryAsAndClickOnSearch(String searchCategory) throws Throwable {
+        try {
+            homePage.selectSearchCategory(searchCategory.trim());
+            System.out.println("===== SEARCH CATEGORY IS SET TO "+searchCategory);
+        } catch (Exception e) {
+            System.out.println("TEST FAILED !. Unable to select search category "+searchCategory+" from the select box due to an exception - "+e.getMessage());
+            _scenario.write("TEST FAILED !. Unable to select search category "+searchCategory+" from the select box due to an exception - "+e.getMessage());
+            Assert.fail("TEST FAILED !. Unable to select search category "+searchCategory+" from the select box due to an exception - "+e.getMessage());
+        }
+
+        try {
+            Thread.sleep(5000);
+            homePage.clickSearchIcon();
+            System.out.println("===== CLICKED ON SEARCH ICON");
+        } catch (Exception e) {
+            System.out.println("TEST FAILED !. Unable to click on search icon due to an exception - "+e.getMessage());
+            _scenario.write("TEST FAILED !. Unable to click on search icon due to an exception - "+e.getMessage());
+            Assert.fail("TEST FAILED !. Unable to click on search icon due to an exception - "+e.getMessage());
+        }
+    }
+
+    @Then("^I navigate to Amazon Chart section$")
+    public void iNavigateToAmazonChartSection() throws Throwable {
+        try {
+            homePage.navigateToAmazonChartsLink();
+            System.out.println("===== NAVIGATED TO 'AMAZON CHARTS' SECTION ");
+        } catch (Exception e) {
+            System.out.println("TEST FAILED !. Unable to navigate to 'Amazon Chart' section due to an exception - "+e.getMessage());
+            _scenario.write("TEST FAILED !. Unable to navigate to 'Amazon Chart' section due to an exception - "+e.getMessage());
+            Assert.fail("TEST FAILED !. Unable to navigate to 'Amazon Chart' section due to an exception - "+e.getMessage());
+        }
+    }
+
+    @Then("^I view most read books section$")
+    public void iViewMostReadBooksSection() throws Throwable {
+        try {
+            homePage.selectMostReadTab();
+        } catch (Exception e) {
+            System.out.println("TEST FAILED !. Unable to select 'Most Read' tab due to an exception - "+e.getMessage());
+            _scenario.write("TEST FAILED !. Unable to select 'Most Read' tab due to an exception - "+e.getMessage());
+            Assert.fail("TEST FAILED !. Unable to select 'Most Read' tab due to an exception - "+e.getMessage());
+        }
+    }
+
+    @Then("^I select fiction category$")
+    public void iSelectFictionCategory() throws Throwable {
+        try {
+            homePage.selectFictionTab();
+        } catch (Exception e) {
+            System.out.println("TEST FAILED !. Unable to select 'Fiction' tab due to an exception - "+e.getMessage());
+            _scenario.write("TEST FAILED !. Unable to select 'Fiction' tab due to an exception - "+e.getMessage());
+            Assert.fail("TEST FAILED !. Unable to select 'Fiction' tab due to an exception - "+e.getMessage());
+        }
+    }
+
+    @Then("^I validate if \"([^\"]*)\" title is ranked as \"([^\"]*)\"$")
+    public void iValidateIfTitleIsRankedAs(String ExpectedTitleName, String rank) throws Throwable {
+        String actualTitle=null;
+        try {
+            actualTitle = homePage.getTheTitleforGivenPosition(rank);
+            System.out.println("ACTUAL TITLE IS : "+actualTitle);
+        } catch (Exception e) {
+            System.out.println("TEST FAILED !. Unable to get the title for given rank due to an exception - "+e.getMessage());
+            _scenario.write("TEST FAILED !. Unable to get the title for given rank due to an exception - "+e.getMessage());
+            Assert.fail("TEST FAILED !. Unable to get the title for given rank due to an exception - "+e.getMessage());
+        }
+
+        //Assertion
+        try {
+            Assert.assertEquals(actualTitle.trim().toLowerCase(),ExpectedTitleName.trim().toLowerCase());
+            System.out.println("TITLES MATCHED");
+        } catch (AssertionError e) {
+            System.out.println("TEST FAILED !. Expected and Actual Titles mismatched - "+e.getMessage());
+            _scenario.write("TEST FAILED !. Expected and Actual Titles mismatched - "+e.getMessage());
+            Assert.fail("TEST FAILED !. Expected and Actual Titles mismatched - "+e.getMessage());
+        }
+    }
+
+
+    @Then("^I select Nonfiction category$")
+    public void iSelectNonfictionCategory() throws Throwable {
+        try {
+            homePage.selectNonFictionTab();
+        } catch (Exception e) {
+            System.out.println("TEST FAILED !. Unable to select 'Nonfiction' tab due to an exception - "+e.getMessage());
+            _scenario.write("TEST FAILED !. Unable to select 'Nonfiction' tab due to an exception - "+e.getMessage());
+            Assert.fail("TEST FAILED !. Unable to select 'Nonfiction' tab due to an exception - "+e.getMessage());
+        }
+    }
+
+    @Then("^I view most sold books section$")
+    public void iViewMostSoldBooksSection() throws Throwable {
+        try {
+            homePage.selectMostSoldTab();
+        } catch (Exception e) {
+            System.out.println("TEST FAILED !. Unable to select 'Most Sold' tab due to an exception - "+e.getMessage());
+            _scenario.write("TEST FAILED !. Unable to select 'Most Sold' tab due to an exception - "+e.getMessage());
+            Assert.fail("TEST FAILED !. Unable to select 'Most Sold' tab due to an exception - "+e.getMessage());
+        }
     }
 }

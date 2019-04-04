@@ -3,9 +3,7 @@ package pages;
 import commonLibrary.implementation.CommonElements;
 import commonLibrary.implementation.selectBoxControls;
 import cucumber.api.Scenario;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -38,8 +36,14 @@ public class CartPage {
     @FindBy(how = How.XPATH, using ="//div[@class='sc-list-item-content']//span[@class='a-size-medium a-color-price sc-price sc-white-space-nowrap sc-product-price sc-price-sign a-text-bold']")
     private List<WebElement> priceOfEachItemInTheCart;
 
-    @FindBy(how=How.XPATH, using = "//span[@class='a-size-medium a-color-price sc-price sc-white-space-nowrap  sc-price-sign']")
+    @FindBy(how=How.XPATH, using = "//span[@id='sc-subtotal-amount-activecart']//span")
     private WebElement subTotalInCart;
+
+    @FindBy(how = How.XPATH, using = "//*[@id='sc-active-cart']/div/h1")
+    private WebElement shoppingCartEmptyMessage;
+
+    @FindBy(how = How.XPATH, using = "//span[@class='a-size-medium sc-product-title a-text-bold']//ancestor::ul//following::div[@class='a-row sc-action-links']//span[@class='a-size-small sc-action-delete']//span")
+    private List<WebElement> deleteButtonListInCart;
 
     public CartPage(WebDriver driver, Scenario _scenario) {
         this.driver=driver;
@@ -60,8 +64,49 @@ public class CartPage {
 
     }
 
-    public int getProductCountInCart()  {
-        return itemsInTheCart.size();
+    public void setupCartBeforeAndAfterTest() throws Exception {
+        clearCart();
+    }
+
+    public void clearCart() throws Exception {
+        //check if cart is empty
+        if(!getItemCountInTheCart().equalsIgnoreCase("0")){
+            System.out.println("CART IS NOT EMPTY. STARTING TO DELETE EXISTING ITEMS");
+            // else navigate inside cart
+            navigateToCartPage();
+            //get all items in the page and remove them all
+            deleteAllItemsInCart();
+            // verify cart item count is 0
+            while (!getItemCountInTheCart().equalsIgnoreCase("0")){
+                System.out.println("Cart is not empty yet. Continuing to delete existing items");
+                deleteAllItemsInCart();
+            }
+            System.out.println("Cart is set to empty successfully ");
+
+        } else {
+            System.out.println("CART IS ALREADY EMPTY");
+        }
+
+    }
+
+    public void deleteAllItemsInCart() throws Exception {
+        for(int i=0;i<deleteButtonListInCart.size();i++){
+            comElemet.click(deleteButtonListInCart.get(i));
+            System.out.println("Deleted product "+i+1);
+            Thread.sleep(5000);
+        }
+    }
+
+    public int getProductCountInCart() throws InterruptedException {
+        int count=0;
+        try {
+            Thread.sleep(5000);
+            count=itemsInTheCart.size();
+        } catch (NoSuchElementException e ) {
+            System.out.println("No items in the list");
+        }
+        System.out.println("ITEMS COUNT INSIDE CART: "+count);
+        return count;
     }
 
     public void deleteGivenProductFromTheCart(String productDesc) throws Exception{
@@ -89,11 +134,35 @@ public class CartPage {
         for(int i=0;i<priceOfEachItemInTheCart.size();i++){
             //converting each price into double
             double price=0;
+            String totalText=null;
+
             try {
-                price = DecimalFormat.getNumberInstance().parse(comElemet.getText(priceOfEachItemInTheCart.get(i)).replace("$","").trim()).doubleValue();
-            } catch (ParseException e) {
-                System.out.println("Error occurred when converting price to double");
+                totalText = comElemet.getText(priceOfEachItemInTheCart.get(i)).trim();
+            } catch (Exception e) {
+                System.out.println("Error occurred when reading item value text from element");
                 throw e;
+            }
+
+            if (totalText.contains("$")) {
+                try {
+                    price=DecimalFormat.getNumberInstance().parse(totalText.replace("$","").trim()).doubleValue();
+                    System.out.println("Removed $ sign from the price text");
+                } catch (ParseException e) {
+                    System.out.println("Error occurred when converting sub total to double");
+                    throw e;
+                } catch (Exception ex){
+                    throw ex;
+                }
+            } else if(totalText.contains("USD")) {
+                try {
+                    price=DecimalFormat.getNumberInstance().parse(totalText.replace("USD","").trim()).doubleValue();
+                    System.out.println("Removed 'USD' from the price text");
+                } catch (ParseException e) {
+                    System.out.println("Error occurred when converting sub total to double");
+                    throw e;
+                } catch (Exception ex){
+                    throw ex;
+                }
             }
 
             //store each value in list
@@ -113,14 +182,57 @@ public class CartPage {
 
         public double getSubTotalInTheCart() throws Exception {
         double subTotal=0;
+        String totalText=null;
 
             try {
-                subTotal=DecimalFormat.getNumberInstance().parse(comElemet.getText(subTotalInCart).replace("$","").trim()).doubleValue();
-            } catch (ParseException e) {
-                System.out.println("Error occurred when converting sub total to double");
+                totalText=comElemet.getText(subTotalInCart).trim();
+            } catch (NoSuchElementException ne){
+                System.out.println("Subtotal value is not found in the page, Checking if the cart is empty");
+
+                //getting the cart empty message from page header
+                String cartEmptyMessage;
+                try {
+                    cartEmptyMessage = comElemet.getText(shoppingCartEmptyMessage);
+                } catch (NoSuchElementException e) {
+                    System.out.println("Element for shoppingCartEmptyMessage was not found in the page ");
+                    throw e;
+                }
+
+                // checking if empty message is valid before setting the subtotal to 0
+                if(cartEmptyMessage.contains("Your Shopping Cart is empty")){
+                    System.out.println("SHOPPING CART IS EMPTY AND SUBTOTAL VALUE IS 0");
+                    totalText="0";
+                } else {
+                    System.out.println("Element of 'Subtotal value' in the cart is not found in the page, but cart is not empty. Actual message in the cart - "+cartEmptyMessage);
+                    throw ne;
+                }
+
+            }catch (ParseException e) {
+                System.out.println("Error occurred when reading sub total text value");
                 throw e;
             } catch (Exception ex){
                 throw ex;
+            }
+
+
+            if (totalText.contains("$")) {
+                try {
+                    subTotal=DecimalFormat.getNumberInstance().parse(totalText.replace("$","").trim()).doubleValue();
+                } catch (ParseException e) {
+                    System.out.println("Error occurred when converting sub total to double");
+                    throw e;
+                } catch (Exception ex){
+                    throw ex;
+                }
+            } else if(totalText.contains("USD")) {
+                try {
+                    subTotal=DecimalFormat.getNumberInstance().parse(totalText.replace("USD","").trim()).doubleValue();
+                } catch (ParseException e) {
+                    System.out.println("Error occurred when converting sub total to double");
+                    throw e;
+                } catch (Exception ex){
+                    throw ex;
+                }
             }
             return subTotal;
         }

@@ -68,8 +68,12 @@ public class ProductPage extends PageObject{
 	@FindBy(how = How.XPATH, using = "//button[@class=' a-button-close a-declarative' and @data-action='a-popover-close']")
     private WebElement declarativeCloseIconInAddToCartOverlay;
 
+	//private By declarativeCloseIconInAddToCartOverlay = By.xpath("//button[@class=' a-button-close a-declarative' and @data-action='a-popover-close']");
+
 	@FindBy(how=How.ID, using = "hlb-view-cart-announce")
     private WebElement cartButtonWhenNoOverlayIsDisplayed;
+
+	//private By cartButtonWhenNoOverlayIsDisplayed = By.id("hlb-view-cart-announce");
 
 
 	//Constructor class
@@ -154,8 +158,14 @@ public class ProductPage extends PageObject{
 
 	public boolean isQuantitySelectBoxPresent() throws Exception {
         //return comElemet.isElementVisible(quantitySelectDropdown);
-       return driver.findElements(quantitySelect).size() > 0;
+       //return driver.findElements(quantitySelect).size() > 0;
+        return comElemet.isElementVisible(driver.findElement(quantitySelect));
 
+
+    }
+
+    public String getProductPageTitle(){
+        return driver.getTitle();
     }
 
 	public int getProductCountInCart()  {
@@ -164,11 +174,12 @@ public class ProductPage extends PageObject{
 
     public void closeAddToCartOverlay() throws Exception {
 	    //checking if no overlay is present
-        if(comElemet.isElementVisible(cartButtonWhenNoOverlayIsDisplayed)){
+        Thread.sleep(5000);
+        if(comElemet.isElementVisible(cartButtonWhenNoOverlayIsDisplayed)){  //
             System.out.println("No overlay is present ");
         } else {
             //check if declarative close button is present and close it if present
-            if(comElemet.isElementVisible(declarativeCloseIconInAddToCartOverlay)){
+            if(comElemet.isElementVisible(declarativeCloseIconInAddToCartOverlay)){  //
                 comElemet.click(declarativeCloseIconInAddToCartOverlay);
                 System.out.println("clicked on declarative close button in add to cart overlay");
             }else {
