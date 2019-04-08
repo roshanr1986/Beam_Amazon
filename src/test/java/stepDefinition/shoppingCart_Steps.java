@@ -1,28 +1,17 @@
 package stepDefinition;
 
 import cucumber.api.DataTable;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 
 import cucumber.api.Scenario;
 //import org.junit.Assert;
-import gherkin.lexer.Th;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.support.PageFactory;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import org.testng.Assert;
-import pages.AddToCartPage;
 import pages.CartPage;
 import pages.HomePage;
 import pages.ProductPage;
-import propertyReader.PropertyReader;
-import util.DriverFactory;
-import util.TestAssert;
 import util.setup;
 
 import java.util.*;
@@ -34,8 +23,6 @@ public class shoppingCart_Steps {
     private HomePage homePage;
     private ProductPage productPage;
     private CartPage cartPage;
-    public PropertyReader propertyReader;
-    public Map<String,String> productDetails;
     public List<String> products;
     public String productSearchName;
 
@@ -45,8 +32,6 @@ public class shoppingCart_Steps {
         driverSetup = new setup(driver);
         homePage=new HomePage(driver,_scenario);
         productPage=new ProductPage(driver,_scenario);
-        propertyReader = new PropertyReader();
-        productDetails=new HashMap<String,String>();
         products=new ArrayList<String>();
         cartPage = new CartPage(driver,_scenario);
     }
@@ -125,11 +110,12 @@ public class shoppingCart_Steps {
         for(Map <String,String> expectedProduct : expectedProductList.asMaps(String.class,String.class)){
             try {
                 Assert.assertTrue(products.contains(expectedProduct.get("productDescription")),"PRODUCT FOUND = "+expectedProduct.get("productDescription"));
+                System.out.println(expectedProduct.get("productDescription")+" is found in the search results");
+                _scenario.write(expectedProduct.get("productDescription")+" is found in the search results");
             } catch (AssertionError e) {
-                //System.out.println("PRODUCT NOT FOUND = "+expectedProduct.get("productDescription"));
-                System.out.println("Expected Product Name - "+expectedProduct.get("productDescription")+" is not found in the search results page ");
-               // _scenario.write("Expected Product Name - "+expectedProduct.get("productDescription")+" is not found in the search results page "+e.getMessage());
-                Assert.fail("Expected Product Name - "+expectedProduct.get("productDescription")+" is not found in the search results page ");
+                System.out.println("Expected Product Name - "+expectedProduct.get("productDescription")+" is not found in the search results page "+"\n");
+                _scenario.write("Expected Product Name - "+expectedProduct.get("productDescription")+" is not found in the search results page "+"\n");
+                Assert.fail("Expected Product Name - "+expectedProduct.get("productDescription")+" is not found in the search results page "+"\n");
             }
         }
     }

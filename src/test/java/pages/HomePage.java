@@ -4,7 +4,6 @@ import commonLibrary.implementation.CommonElements;
 import commonLibrary.implementation.selectBoxControls;
 import commonLibrary.implementation.textBoxControls;
 import cucumber.api.Scenario;
-import gherkin.lexer.Th;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -13,13 +12,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-import core.PageObject;
-import util.DriverFactory;
-
-public class HomePage extends PageObject{
+public class HomePage {
 	
 	public ProductPage productPage;
-	public AddToCartPage addToCartPage;
 	public WebDriver driver;
 	public Scenario _scenario;
 	public CommonElements comElement;
@@ -96,8 +91,6 @@ public class HomePage extends PageObject{
 	private WebElement nonFictionTabNotSelected;
 
 
-	//div[@class='kc-tabs-label kc-active-tab' and contains(text(), 'MOST READ')]
-
 	//Constructor class
 	public HomePage(WebDriver driver, Scenario _scenario) {
 		this.driver=driver;
@@ -107,49 +100,12 @@ public class HomePage extends PageObject{
 		textBox = new textBoxControls(_scenario);
 		selectBox = new selectBoxControls(driver,_scenario);
 	}
-
-
-	public boolean checkHomePageLoaded(){
-		return isPageLoaded(amazonLogo);
-	}
-
-	public String getAmazonPageTitle() {
-		return driver.getTitle();
-	}
-
-	public void loginIntoAmazonInvalidUsername(String username, String password) {
-		waitElementToBeClickable(amazonLoginLink);
-		clickElement(amazonLoginLink);
-		waitElementToBeClickable(loginEmail_textBox);
-		setText(loginEmail_textBox, username);
-		setText(loginEmailPassword_textBox,password);
-		clickElement(loginEmailSignIn_button);
-	}
-	
-	public void loginIntoAmazon(String username, String password) {
-		waitElementToBeClickable(amazonLoginLink);
-		clickElement(amazonLoginLink);
-		waitElementToBeClickable(loginEmail_textBox);
-		setText(loginEmail_textBox, username);
-		clickElement(loginEmailSignIn_button);
-		waitElementToBeClickable(signInSubmit_button);
-		setText(loginEmailPassword_textBox, password);
-		clickElement(signInSubmit_button);		
-	}
-	
-	public String getLoginErrorMessage() {
-		waitElementToBeClickable(loginError_text);
-		return loginError_text.getText();
-	}
 	
 	public void searchItem(String itemName) throws Exception {
 		comElement.waitElementToBeClickable(tabSearchTextBox_textbox);
-		//waitElementToBeClickable(tabSearchTextBox_textbox);
 		textBox.clearTextBox(tabSearchTextBox_textbox);
 		textBox.setText(tabSearchTextBox_textbox,itemName);
-		//setText(tabSearchTextBox_textbox, itemName);
 		clickSearchIcon();
-		//clickElement(searchBox_button);
 	}
 
 	public void clickSearchIcon() throws Exception {
@@ -227,22 +183,6 @@ public class HomePage extends PageObject{
 		}
 
 		return comElement.getText(element);
-	}
-	
-	public void clickFirstItemInVisible() {
-		clickElement(firstElementOnPresent);
-		try {
-			waitForElement(addToCart_button);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-	
-	public void clickOnTheCart() {
-		clickElement(clickCartButton);
-		//addToCartPage = PageFactory.initElements(DriverFactory.getInstance().getDriver(), AddToCartPage.class);
-		//return addToCartPage;
 	}
 
 	

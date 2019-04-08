@@ -20,7 +20,7 @@ public class Hooks {
         driver=DriverFactory.getInstance().getDriver();
         driver.manage().deleteAllCookies();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         _scenario = scenario;
     }
 

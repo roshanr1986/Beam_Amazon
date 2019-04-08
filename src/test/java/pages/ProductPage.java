@@ -9,21 +9,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
-
-import core.PageObject;
-import util.DriverFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class ProductPage extends PageObject{
+public class ProductPage {
 
 	public WebDriver driver;
 	public Scenario _scenario;
-	private AddToCartPage addToCartPage;
 	private CommonElements comElemet;
 	private selectBoxControls selectBox;
 
@@ -68,12 +63,10 @@ public class ProductPage extends PageObject{
 	@FindBy(how = How.XPATH, using = "//button[@class=' a-button-close a-declarative' and @data-action='a-popover-close']")
     private WebElement declarativeCloseIconInAddToCartOverlay;
 
-	//private By declarativeCloseIconInAddToCartOverlay = By.xpath("//button[@class=' a-button-close a-declarative' and @data-action='a-popover-close']");
-
 	@FindBy(how=How.ID, using = "hlb-view-cart-announce")
     private WebElement cartButtonWhenNoOverlayIsDisplayed;
 
-	//private By cartButtonWhenNoOverlayIsDisplayed = By.id("hlb-view-cart-announce");
+
 
 
 	//Constructor class
@@ -85,31 +78,6 @@ public class ProductPage extends PageObject{
 		PageFactory.initElements(driver, this);
 	}
 
-
-	public boolean checkProductPageLoaded(){
-		return isPageLoaded(addToCart_button);
-	}
-
-	public String getProductPrice() {
-		return productPrice.getText();
-	}
-
-	public String getProductName() {
-		return productTitle.getText();
-	}
-	
-	public void addItemToTheCart(String productCount) {
-		Select prodcutSelectCnt = new Select(productQuantity);
-		prodcutSelectCnt.selectByVisibleText(productCount);
-		clickElement(addToCart_button);
-		//addToCartPage = PageFactory.initElements(DriverFactory.getInstance().getDriver(), AddToCartPage.class);
-		//return addToCartPage;
-	}
-	
-	public String readAddToCartMessage() throws Exception {
-		waitForElement(addToCartMessage);
-		return addToCartMessage.getText();
-	}
 
 	public List<String> getProductList() throws Exception {
 		List<String> products = new ArrayList<String>();
@@ -157,11 +125,7 @@ public class ProductPage extends PageObject{
 	}
 
 	public boolean isQuantitySelectBoxPresent() throws Exception {
-        //return comElemet.isElementVisible(quantitySelectDropdown);
-       //return driver.findElements(quantitySelect).size() > 0;
         return comElemet.isElementVisible(driver.findElement(quantitySelect));
-
-
     }
 
     public String getProductPageTitle(){
@@ -175,15 +139,14 @@ public class ProductPage extends PageObject{
     public void closeAddToCartOverlay() throws Exception {
 	    //checking if no overlay is present
         Thread.sleep(5000);
-        if(comElemet.isElementVisible(cartButtonWhenNoOverlayIsDisplayed)){  //
+        if(comElemet.isElementVisible(cartButtonWhenNoOverlayIsDisplayed)){
             System.out.println("No overlay is present ");
         } else {
             //check if declarative close button is present and close it if present
-            if(comElemet.isElementVisible(declarativeCloseIconInAddToCartOverlay)){  //
+            if(comElemet.isElementVisible(declarativeCloseIconInAddToCartOverlay)){
                 comElemet.click(declarativeCloseIconInAddToCartOverlay);
                 System.out.println("clicked on declarative close button in add to cart overlay");
             }else {
-                //comElemet.click(cloceIconInAddToCartOverlay);
                 System.out.println("refreshing the page to get rid of add to cart overlays");
                 //refreshing the page to get rid of add to cart overlays
                 driver.navigate().refresh();

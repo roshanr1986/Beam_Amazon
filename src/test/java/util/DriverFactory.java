@@ -1,13 +1,9 @@
 package util;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-
-import propertyReader.PropertyReader;
 
 public class DriverFactory {
 	
@@ -16,7 +12,6 @@ public class DriverFactory {
     private String browser = "firefox";
     private String version = "firefox";
     private String URL = "";
-    PropertyReader propertyReader = new PropertyReader();
 
     private DriverFactory() {
     	

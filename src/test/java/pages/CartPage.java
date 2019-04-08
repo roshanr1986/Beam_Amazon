@@ -11,7 +11,6 @@ import org.openqa.selenium.support.PageFactory;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class CartPage {
@@ -72,6 +71,7 @@ public class CartPage {
         //check if cart is empty
         if(!getItemCountInTheCart().equalsIgnoreCase("0")){
             System.out.println("CART IS NOT EMPTY. STARTING TO DELETE EXISTING ITEMS");
+            System.out.println("NO OF ITEMS STILL IN THE CART : "+getItemCountInTheCart());
             // else navigate inside cart
             navigateToCartPage();
             //get all items in the page and remove them all
@@ -121,7 +121,7 @@ public class CartPage {
 
     }
 
-    public String getItemCountInTheCart() throws InterruptedException, Exception {
+    public String getItemCountInTheCart() throws Exception {
         Thread.sleep(3000);
         return comElemet.getText(itemCountInCartIcon).trim();
     }
