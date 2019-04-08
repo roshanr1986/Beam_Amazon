@@ -76,7 +76,7 @@ $(document).ready(function() {
           <tr class="info">
             <td>Amazon_Test_Suite</td>
                           <td>1</td>
-                        <td>01 Apr 2019, 12:37</td>
+                        <td>08 Apr 2019, 18:37</td>
           </tr>
         </tbody>
       </table>
@@ -123,17 +123,17 @@ $(document).ready(function() {
         <tbody>
         <tr>
           <td class="tagname">@all</td>
-                    <td >0</td>
-          <td  class="failed"    >1</td>
+                    <td  class="passed"    >1</td>
+          <td >0</td>
           <td class="total">1</td>
-          <td      class="passed"    >2</td>
-          <td      class="failed"    >1</td>
-          <td     class="skipped"   >3</td>
+          <td      class="passed"    >4</td>
           <td >0</td>
           <td >0</td>
-          <td class="total">6</td>
-          <td class="duration" data-value="356991187500">5m 56s 991ms</td>
-          <td class="failed">Failed</td>
+          <td >0</td>
+          <td >0</td>
+          <td class="total">4</td>
+          <td class="duration" data-value="12834822700">12s 834ms</td>
+          <td class="passed">Passed</td>
         </tr>
         </tbody>
 
@@ -157,16 +157,16 @@ $(document).ready(function() {
   
   
 <div class="tags indention">
-       <a href="Scenario4.html">@Scenario4</a>
+       <a href="Scenario1.html">@Scenario1</a>
        <a href="all.html">@all</a>
   </div>
 
 
-    <span data-toggle="collapse" class=" collapsable-control" data-target="#element-1">
+    <span data-toggle="collapse" class=" collapsed  collapsable-control" data-target="#element-1">
     
-<div class="brief failed">
+<div class="brief passed">
   <span class="keyword indention">Scenario</span>
-  <span class="name">Add list of products to the cart and verify the changes</span>
+  <span class="name">Search for a product and verify the list count</span>
   
 
        <i class="chevron fa fa-fw"></i>
@@ -175,7 +175,7 @@ $(document).ready(function() {
   </span>
   <div class="description indention"></div>
 
-  <div id="element-1" class="collapse collapsable-details  in ">
+  <div id="element-1" class="collapse collapsable-details ">
     
   <div class="inner-level hooks-before">
         <div data-toggle="collapse" class=" collapsed  collapsable-control" data-target="#before-2">
@@ -196,7 +196,7 @@ $(document).ready(function() {
             <span class="keyword indention">Before</span>
                           <span class="location name">Hooks.before(Scenario)</span>
                         
-  <span class="lead-duration duration">12s 248ms</span>
+  <span class="lead-duration duration">10s 202ms</span>
 
           </div>
 
@@ -212,9 +212,9 @@ $(document).ready(function() {
 
     
 <div class="steps inner-level">
-    <div data-toggle="collapse" class=" collapsable-control" data-target="#steps-3">
+    <div data-toggle="collapse" class=" collapsed  collapsable-control" data-target="#steps-3">
     
-<div class="brief failed">
+<div class="brief passed">
   <span class="keyword indention">Steps</span>
   <span class="name"></span>
   
@@ -224,14 +224,14 @@ $(document).ready(function() {
 
   </div>
 
-  <div id="steps-3" class="inner-level collapse collapsable-details  in ">
+  <div id="steps-3" class="inner-level collapse collapsable-details ">
           <div class="step">
         
 <div class="brief passed">
   <span class="keyword indention">Given</span>
   <span class="name">I navigate to "https://www.amazon.com/"</span>
   
-  <span class="lead-duration duration">4s 604ms</span>
+  <span class="lead-duration duration">5s 179ms</span>
 
   </div>
 
@@ -262,7 +262,7 @@ $(document).ready(function() {
   <span class="keyword indention">Given</span>
   <span class="name">I search for the product "iphone 8"</span>
   
-  <span class="lead-duration duration">3s 568ms</span>
+  <span class="lead-duration duration">3s 297ms</span>
 
   </div>
 
@@ -279,113 +279,71 @@ $(document).ready(function() {
       </div>
           <div class="step">
         
-<div class="brief failed">
+<div class="brief passed">
   <span class="keyword indention">Then</span>
-  <span class="name">I add following products to the cart</span>
+  <span class="name">I read the list of product descriptions on page 1</span>
   
-  <span class="lead-duration duration">5m 48s 818ms</span>
+  <span class="lead-duration duration">4s 348ms</span>
 
   </div>
 
         
 
-  <div class="inner-level">
-    <div class="message indention">
-      <div data-toggle="collapse" class="collapsable-control" data-target="#msg-5">
-          <a>Error message</a>
+
+        
+        
+
+        
+
+        
+
       </div>
-      <div id="msg-5" class="collapse collapsable-details">
-        <pre>java.lang.AssertionError: Close icon in the overlay was not found. Unable to close the overlay and proceed ahead
-	at org.testng.Assert.fail(Assert.java:96)
-	at stepDefinition.shoppingCart_Steps.iAddFollowingProductsToTheCartWithQuantity(shoppingCart_Steps.java:292)
-	at ✽.Then I add following products to the cart(AmazonShoppingCart.feature:61)
-</pre>
-      </div>
-    </div>
+          <div class="step">
+        
+<div class="brief passed">
+  <span class="keyword indention">Then</span>
+  <span class="name">I validate if following products are found in the page</span>
+  
+  <span class="lead-duration duration">008ms</span>
+
   </div>
+
+        
 
 
                   <table class="step-arguments">
                           <tr>
                                   <td>productDescription</td>
-                                  <td>quantity</td>
                               </tr>
                           <tr>
-                                  <td>Apple iPhone 8 (64GB) - Silver - [works exclusively with Simple Mobile]</td>
-                                  <td>1</td>
+                                  <td>Apple iPhone 8 (64GB) - Silver [Locked to Simple Mobile Prepaid]</td>
                               </tr>
                           <tr>
-                                  <td>Apple iPhone 8, GSM Unlocked, 64GB - Space Gray (Refurbished)</td>
-                                  <td>1</td>
+                                  <td>Apple iPhone 8, GSM Unlocked, 64GB - Gold (Renewed)</td>
                               </tr>
                       </table>
         
         
 
         
-
-        
-
+  <div class="outputs inner-level">
+          <div class="output indention">
+                <div data-toggle="collapse" class="collapsable-control" data-target="#msg-5">
+                    <a>Output 1</a>
+        </div>
+        <div id="msg-5" class="collapse collapsable-details">
+          <pre>Apple iPhone 8 (64GB) - Silver [Locked to Simple Mobile Prepaid] is found in the search results</pre>
+        </div>
       </div>
-          <div class="step">
-        
-<div class="brief skipped">
-  <span class="keyword indention">Then</span>
-  <span class="name">I navigate to cart</span>
-  
-  <span class="lead-duration duration">000ms</span>
-
-  </div>
-
-        
-
-
-        
-        
-
-        
-
-        
-
+          <div class="output indention">
+                <div data-toggle="collapse" class="collapsable-control" data-target="#msg-6">
+                    <a>Output 2</a>
+        </div>
+        <div id="msg-6" class="collapse collapsable-details">
+          <pre>Apple iPhone 8, GSM Unlocked, 64GB - Gold (Renewed) is found in the search results</pre>
+        </div>
       </div>
-          <div class="step">
-        
-<div class="brief skipped">
-  <span class="keyword indention">Then</span>
-  <span class="name">I verify if number of products in the cart is 2</span>
-  
-  <span class="lead-duration duration">000ms</span>
-
-  </div>
-
-        
-
-
-        
-        
-
-        
-
-        
-
       </div>
-          <div class="step">
-        
-<div class="brief skipped">
-  <span class="keyword indention">Then</span>
-  <span class="name">I verify if total price in the cart is changed</span>
-  
-  <span class="lead-duration duration">000ms</span>
-
-  </div>
-
-        
-
-
-        
-        
-
-        
 
         
 
@@ -396,7 +354,7 @@ $(document).ready(function() {
 
     
   <div class="inner-level hooks-after">
-        <div data-toggle="collapse" class=" collapsed  collapsable-control" data-target="#after-6">
+        <div data-toggle="collapse" class=" collapsed  collapsable-control" data-target="#after-7">
       
 <div class="brief passed">
   <span class="keyword indention">Hooks</span>
@@ -408,13 +366,13 @@ $(document).ready(function() {
 
     </div>
 
-    <div id="after-6" class="inner-level collapse collapsable-details ">
+    <div id="after-7" class="inner-level collapse collapsable-details ">
               <div class="hook">
           <div class="brief passed">
             <span class="keyword indention">After</span>
                           <span class="location name">Hooks.after()</span>
                         
-  <span class="lead-duration duration">044ms</span>
+  <span class="lead-duration duration">015ms</span>
 
           </div>
 

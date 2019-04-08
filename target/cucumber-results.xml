@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite failures="1" name="cucumber.runtime.formatter.JUnitFormatter" skipped="0" tests="1" time="369.285118">
-    <testcase classname="Amazon shopping cart functionality" name="Add list of products to the cart and verify the changes" time="369.285118">
-        <failure message="java.lang.AssertionError: Close icon in the overlay was not found. Unable to close the overlay and proceed ahead&#13;&#10;&#9;at org.testng.Assert.fail(Assert.java:96)&#13;&#10;&#9;at stepDefinition.shoppingCart_Steps.iAddFollowingProductsToTheCartWithQuantity(shoppingCart_Steps.java:292)&#13;&#10;&#9;at ✽.Then I add following products to the cart(AmazonShoppingCart.feature:61)&#13;&#10;">
+<testsuite failures="0" name="cucumber.runtime.formatter.JUnitFormatter" skipped="0" tests="1" time="23.052862">
+    <testcase classname="Amazon shopping cart functionality" name="Search for a product and verify the list count" time="23.052862">
+        <system-out>
             <![CDATA[Given I navigate to "https://www.amazon.com/"...............................passed
 Given I search for the product "iphone 8"...................................passed
-Then I add following products to the cart...................................failed
-Then I navigate to cart.....................................................skipped
-Then I verify if number of products in the cart is 2........................skipped
-Then I verify if total price in the cart is changed.........................skipped
-
-StackTrace:
-java.lang.AssertionError: Close icon in the overlay was not found. Unable to close the overlay and proceed ahead
-	at org.testng.Assert.fail(Assert.java:96)
-	at stepDefinition.shoppingCart_Steps.iAddFollowingProductsToTheCartWithQuantity(shoppingCart_Steps.java:292)
-	at ✽.Then I add following products to the cart(AmazonShoppingCart.feature:61)
+Then I read the list of product descriptions on page 1......................passed
+Then I validate if following products are found in the page.................passed
 ]]>
-        </failure>
+        </system-out>
     </testcase>
 </testsuite>

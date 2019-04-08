@@ -1,9 +1,9 @@
+stepDefinition\testSetup.class
 util\setup.class
 commonLibrary\implementation\checkBoxControls.class
 pages\ProductPage.class
 commonLibrary\implementation\selectBoxControls.class
 pages\CartPage.class
-util\TestAssert.class
 commonLibrary\contracts\IwindowHandeling.class
 commonLibrary\contracts\IFrameHandling.class
 commonLibrary\contracts\Driver.class
@@ -17,14 +17,10 @@ util\DriverFactory.class
 pages\HomePage.class
 stepDefinition\Hooks.class
 stepDefinition\shoppingCart_Steps.class
-stepDefinition\StepsBase.class
 commonLibrary\contracts\ICommonElements.class
 commonLibrary\implementation\CommonElements.class
 commonLibrary\implementation\WindowControls.class
-core\PageObject.class
-propertyReader\PropertyReader.class
 commonLibrary\implementation\AlertControls.class
-pages\AddToCartPage.class
 runner\TestRunner.class
 commonLibrary\contracts\IJavaScript.class
 commonLibrary\implementation\JavaScriptExecutor.class

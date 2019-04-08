@@ -7,78 +7,71 @@ formatter.feature({
   "keyword": "Feature"
 });
 formatter.before({
-  "duration": 12248941300,
+  "duration": 10202242300,
   "status": "passed"
 });
 formatter.scenario({
-  "line": 58,
-  "name": "Add list of products to the cart and verify the changes",
+  "line": 4,
+  "name": "Search for a product and verify the list count",
   "description": "",
-  "id": "amazon-shopping-cart-functionality;add-list-of-products-to-the-cart-and-verify-the-changes",
+  "id": "amazon-shopping-cart-functionality;search-for-a-product-and-verify-the-list-count",
   "type": "scenario",
   "keyword": "Scenario",
   "tags": [
     {
-      "line": 56,
-      "name": "@Scenario4"
+      "line": 2,
+      "name": "@Scenario1"
     },
     {
-      "line": 57,
+      "line": 3,
       "name": "@all"
     }
   ]
 });
 formatter.step({
-  "line": 59,
+  "line": 5,
   "name": "I navigate to \"https://www.amazon.com/\"",
   "keyword": "Given "
 });
 formatter.step({
-  "line": 60,
+  "line": 6,
   "name": "I search for the product \"iphone 8\"",
   "keyword": "Given "
 });
 formatter.step({
-  "line": 61,
-  "name": "I add following products to the cart",
+  "line": 7,
+  "name": "I read the list of product descriptions on page 1",
+  "keyword": "Then "
+});
+formatter.step({
+  "comments": [
+    {
+      "line": 8,
+      "value": "#Then I validate if search results count is 19"
+    }
+  ],
+  "line": 9,
+  "name": "I validate if following products are found in the page",
   "rows": [
     {
       "cells": [
-        "productDescription",
-        "quantity"
+        "productDescription"
       ],
-      "line": 62
+      "line": 10
     },
     {
       "cells": [
-        "Apple iPhone 8 (64GB) - Silver - [works exclusively with Simple Mobile]",
-        "1"
+        "Apple iPhone 8 (64GB) - Silver [Locked to Simple Mobile Prepaid]"
       ],
-      "line": 63
+      "line": 11
     },
     {
       "cells": [
-        "Apple iPhone 8, GSM Unlocked, 64GB - Space Gray (Refurbished)",
-        "1"
+        "Apple iPhone 8, GSM Unlocked, 64GB - Gold (Renewed)"
       ],
-      "line": 64
+      "line": 12
     }
   ],
-  "keyword": "Then "
-});
-formatter.step({
-  "line": 65,
-  "name": "I navigate to cart",
-  "keyword": "Then "
-});
-formatter.step({
-  "line": 66,
-  "name": "I verify if number of products in the cart is 2",
-  "keyword": "Then "
-});
-formatter.step({
-  "line": 67,
-  "name": "I verify if total price in the cart is changed",
   "keyword": "Then "
 });
 formatter.match({
@@ -92,7 +85,7 @@ formatter.match({
 });
 formatter.write("navigated to URL : https://www.amazon.com/");
 formatter.result({
-  "duration": 4604370800,
+  "duration": 5179678700,
   "status": "passed"
 });
 formatter.match({
@@ -105,43 +98,33 @@ formatter.match({
   "location": "shoppingCart_Steps.iSearchForTheProduct(String)"
 });
 formatter.result({
-  "duration": 3568260000,
+  "duration": 3297461100,
   "status": "passed"
-});
-formatter.match({
-  "location": "shoppingCart_Steps.iAddFollowingProductsToTheCartWithQuantity(DataTable)"
-});
-formatter.result({
-  "duration": 348818556700,
-  "error_message": "java.lang.AssertionError: Close icon in the overlay was not found. Unable to close the overlay and proceed ahead\r\n\tat org.testng.Assert.fail(Assert.java:96)\r\n\tat stepDefinition.shoppingCart_Steps.iAddFollowingProductsToTheCartWithQuantity(shoppingCart_Steps.java:292)\r\n\tat ✽.Then I add following products to the cart(AmazonShoppingCart.feature:61)\r\n",
-  "status": "failed"
-});
-formatter.match({
-  "location": "shoppingCart_Steps.iNavigateToCart()"
-});
-formatter.result({
-  "status": "skipped"
 });
 formatter.match({
   "arguments": [
     {
-      "val": "2",
-      "offset": 46
+      "val": "1",
+      "offset": 48
     }
   ],
-  "location": "shoppingCart_Steps.iVerifyIfNumberOfProductsInTheCartIs(int)"
+  "location": "shoppingCart_Steps.iReadTheListOfProductDescriptionsOnPage(int)"
 });
 formatter.result({
-  "status": "skipped"
+  "duration": 4348709300,
+  "status": "passed"
 });
 formatter.match({
-  "location": "shoppingCart_Steps.iVerifyIfTotalPriceInTheCartIsChanged()"
+  "location": "shoppingCart_Steps.iValidateIfFollowingProductsAreFoundInThePage(DataTable)"
 });
+formatter.write("Apple iPhone 8 (64GB) - Silver [Locked to Simple Mobile Prepaid] is found in the search results");
+formatter.write("Apple iPhone 8, GSM Unlocked, 64GB - Gold (Renewed) is found in the search results");
 formatter.result({
-  "status": "skipped"
+  "duration": 8973600,
+  "status": "passed"
 });
 formatter.after({
-  "duration": 44988700,
+  "duration": 15797100,
   "status": "passed"
 });
 });
